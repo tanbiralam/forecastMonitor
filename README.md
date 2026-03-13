@@ -64,6 +64,10 @@ Default UI state:
   Shared types and forecast-to-actual matching logic.
 - `scripts/fetchJanData.mjs`
   One-off data preparation script used to fetch, merge, clean, and save January 2024 BMRS data into `public/`.
+- `notebook/forecast_error_analysis.ipynb`
+  Forecast error analysis notebook using actuals and forecasts.
+- `notebook/reliability_analysis.ipynb`
+  Wind generation reliability analysis notebook using historical actuals.
 - `public/actuals-jan2024-clean.json`
   Cleaned actual wind generation snapshot.
 - `public/forecasts-jan2024.json`
@@ -118,6 +122,14 @@ npm run start
 npm run lint
 ```
 
+## Analysis notebooks
+
+- `notebook/forecast_error_analysis.ipynb`
+  Uses `actuals-jan2024-clean.json` and `forecasts-jan2024.json` to analyze forecast error characteristics, including horizon-based error, time-of-day variation, error distribution, and forecast bias. The notebook filters forecast records to the `0-48h` horizon range for the analysis.
+- `notebook/reliability_analysis.ipynb`
+  Uses `actuals-jan2024-clean.json` to analyze historical January 2024 wind generation and estimate dependable wind capacity. The notebook's recommendation is based on percentile-style reliability thresholds and concludes that roughly `5 GW` can be treated as a conservative reliable level.
+- Both notebooks are currently set up for Google Colab/Jupyter-style execution and begin by uploading the JSON files from `public/`.
+
 ## API contract
 
 ### `GET /api/actuals`
@@ -148,9 +160,20 @@ Returns:
 - The horizon slider currently allows `0` to `66` hours because the saved forecast dataset contains horizons beyond `48` hours.
 - Forecast coverage is intentionally incomplete where no eligible forecast exists. Those gaps are shown as missing forecast values in the chart.
 - The browser page metadata is still using the default Next.js title/description values from `app/layout.tsx`.
-- This repository currently contains the application only. No analysis notebook is present in the project tree.
+- This repository now includes the analysis notebooks under the `notebook/` directory.
 
 ## Verification status
 
 - `npm run build`: passes
 - `npm run lint`: currently fails because several files still use `any`
+
+## AI Assistance Disclosure
+
+AI tools were used during development for limited assistance, including:
+
+- Debugging TypeScript and Next.js issues
+- Refactoring utility functions
+- Generating small code snippets
+- Improving documentation and README structure
+
+All application logic, data processing decisions, and analysis notebooks were implemented and verified manually.
